@@ -31,6 +31,7 @@ end
 
 local nearbyDoors = {}
 local Entity = Entity
+local unlockss = false
 
 lib.callback('ox_doorlock:getDoors', false, function(data)
 	doors = data
@@ -334,7 +335,9 @@ CreateThread(function()
 				showUI = ClosestDoor.state
 			end
 
-			if not PickingLock and IsDisabledControlJustReleased(0, 38) then
+			--if not PickingLock and IsDisabledControlJustReleased(0, 73) then
+			if unlockss then
+				unlockss = false
 				useClosestDoor()
 			end
 		elseif showUI then
@@ -345,6 +348,12 @@ CreateThread(function()
 		Wait(num > 0 and 0 or 500)
 	end
 end)
+
+RegisterCommand('+unlock', function()
+    unlockss = true
+end, false)
+
+RegisterKeyMapping('+unlock', 'Unlock Door', 'keyboard', 'E')
 
 exports('useClosestDoor', useClosestDoor)
 exports('getClosestDoor', function() return ClosestDoor end)
